@@ -56,15 +56,15 @@ public class SqliteHelper extends SQLiteOpenHelper {
     public void copyDataOut(String filepath) {
 
         dbThis = getWritableDatabase();
-        filepath = dbThis.getPath();
-        Log.e("<<filedb", filepath);
+        String sysfile = dbThis.getPath();
+        Log.e("<<filedb", sysfile);
         FileInputStream fis;
         FileOutputStream fos;
         try {
-            fis = new FileInputStream(filepath);
+            fis = new FileInputStream(sysfile);
             File f = Environment.getExternalStorageDirectory();
             String ffoutput = f.getAbsolutePath();
-            f = new File(ffoutput, "thanhapp");
+            f = new File(ffoutput, filepath);
             if (!f.exists())
                 f.mkdir();
 
@@ -87,18 +87,18 @@ public class SqliteHelper extends SQLiteOpenHelper {
     public void copyDataIn(String filepath) {
 
         dbThis = getReadableDatabase();
-        filepath = dbThis.getPath();
-        Log.e("<<filedb", filepath);
+        String sysfile = dbThis.getPath();
+        Log.e("<<filedb", sysfile);
         FileInputStream fis;
         FileOutputStream fos;
         try {
             File f = Environment.getExternalStorageDirectory();
-            File fff = new File(f.getAbsolutePath(), "thanhapp");
+            File fff = new File(f.getAbsolutePath(), filepath);
             String ffinn = fff.getAbsolutePath() + "/" + DBname;
 
             fis = new FileInputStream(ffinn);
 
-            fos = new FileOutputStream(filepath, false);
+            fos = new FileOutputStream(sysfile, false);
             int len = fis.available();
             byte[] mm = new byte[len];
             fis.read(mm);
@@ -171,8 +171,8 @@ public class SqliteHelper extends SQLiteOpenHelper {
 
     public User QueryDB() {
         User mm = new User();
-        dbThis = SQLiteDatabase.openDatabase(getDBfrom(),null,SQLiteDatabase.OPEN_READWRITE,errorHandler);//database in strorage
-        //dbThis = getReadableDatabase();// in system databases folder
+        //dbThis = SQLiteDatabase.openDatabase(getDBfrom(),null,SQLiteDatabase.OPEN_READWRITE,errorHandler);//database in strorage
+        dbThis = getReadableDatabase();// in system databases folder
         Cursor cursor = dbThis.query(DBbaseTbl, null, null, null, null, null, "name");
         if(cursor.getCount()>0){
             cursor.moveToFirst();

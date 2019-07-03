@@ -57,10 +57,12 @@ public class MainActivity extends AppCompatActivity {
         SqliteHelper sh = new SqliteHelper(this);
         //sh.insertData();
         //sh.copyDataIn("myfile");
+        sh.readAsset2SysApp(this);
         User m = sh.QueryDB();
         vmObj.setName(m.getName());
         vmObj.setPhone(m.getPhone());
     }
+
 
     void addrecord(String name, String age, String birth, String address, String phone) {
         realm.beginTransaction();

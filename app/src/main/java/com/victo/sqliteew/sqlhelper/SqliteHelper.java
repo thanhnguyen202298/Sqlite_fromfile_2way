@@ -13,12 +13,14 @@ import android.os.Environment;
 import android.telephony.mbms.FileInfo;
 import android.util.Log;
 
+import com.victo.sqliteew.R;
 import com.victo.sqliteew.model.MyClass;
 import com.victo.sqliteew.model.User;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -114,6 +116,29 @@ public class SqliteHelper extends SQLiteOpenHelper {
 
     }
 
+    public void readAsset2SysApp(Context context){
+        dbThis = getReadableDatabase();
+        String sysfile = dbThis.getPath();
+        Log.e("<<filedb", sysfile);
+        InputStream fis;
+        FileOutputStream fos;
+        try {
+            fis = context.getResources().openRawResource(R.raw.test);
+
+            fos = new FileOutputStream(sysfile, false);
+            int len = fis.available();
+            byte[] mm = new byte[len];
+            fis.read(mm);
+
+            fos.write(mm);
+            fos.flush();
+            fos.close();
+            fis.close();
+
+        } catch (Exception ex) {
+            Log.e("<<<Exppp", ex.getMessage());
+        }
+    }
 
     public Long insertData() {
         ContentValues values = new ContentValues();

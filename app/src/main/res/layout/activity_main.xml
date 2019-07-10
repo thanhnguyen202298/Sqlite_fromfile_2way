@@ -77,7 +77,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/Log"
+        android:id="@+id/Log" android:onClick="OnclickLog"
         android:text="LOG"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/save"

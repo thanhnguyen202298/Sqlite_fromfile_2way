@@ -21,9 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 public class SqliteHelper extends SQLiteOpenHelper {
 
@@ -40,8 +38,8 @@ public class SqliteHelper extends SQLiteOpenHelper {
     public SqliteHelper(Context ctx) {
         super(ctx, DBname, null, DBversion);
         listener = new ListenerDB();
-        int nn = getWritableDatabase().delete(DBbaseTbl, null, null);
-        Log.e("<<delelte", nn + "");
+        //int nn = getWritableDatabase().delete(DBbaseTbl, null, null);
+        // Log.e("<<delelte", nn + "");
     }
 
     @Override
@@ -49,7 +47,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
 
         try {
             int nn = db.delete(DBbaseTbl, null, null);
-            Log.e("<<delelte", nn + "");
+           Log.e("<<delelte", nn + "");
         } catch (Exception ex) {
             Log.e("<<sqliet", ex.getMessage());
         }
@@ -96,7 +94,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
         try {
             File f = Environment.getExternalStorageDirectory();
             File fff = new File(f.getAbsolutePath(), filepath);
-            String ffinn = fff.getAbsolutePath() + "/" + DBname;
+            String ffinn = String.format("%s/%s", fff.getAbsolutePath(), DBname);
 
             fis = new FileInputStream(ffinn);
 
@@ -116,7 +114,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
 
     }
 
-    public void readAsset2SysApp(Context context){
+    public void readAsset2SysApp(Context context) {
         dbThis = getReadableDatabase();
         String sysfile = dbThis.getPath();
         Log.e("<<filedb", sysfile);
@@ -140,10 +138,10 @@ public class SqliteHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Long insertData() {
+    public Long insertData(User user) {
         ContentValues values = new ContentValues();
-        values.put("name", "thwnhd");
-        values.put("phone", "015798889");
+        values.put("name", user.getName());
+        values.put("phone", user.getPhone());
         Long n = -1L;
         dbThis = getWritableDatabase();
         try {
@@ -163,8 +161,9 @@ public class SqliteHelper extends SQLiteOpenHelper {
         dbThis = getReadableDatabase();
         Cursor cursor = dbThis.query(table, cols, conditional, Agrs, colgroup, colshave, order);
         int index, type;
+        final ContentValues cv = new ContentValues();
         while (cursor.moveToNext()) {
-            final ContentValues cv = new ContentValues();
+
             for (String col : cursor.getColumnNames()) {
                 index = cursor.getColumnIndex(col);
                 type = cursor.getType(index);
@@ -190,7 +189,6 @@ public class SqliteHelper extends SQLiteOpenHelper {
 
             u.ListItem.add(cv);
         }
-
         return u;
     }
 
@@ -199,7 +197,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
         //dbThis = SQLiteDatabase.openDatabase(getDBfrom(),null,SQLiteDatabase.OPEN_READWRITE,errorHandler);//database in strorage
         dbThis = getReadableDatabase();// in system databases folder
         Cursor cursor = dbThis.query(DBbaseTbl, null, null, null, null, null, "name");
-        if(cursor.getCount()>0){
+        if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             mm.setName(cursor.getString(cursor.getColumnIndex("name")));
             mm.setPhone(cursor.getString(cursor.getColumnIndex("phone")));
@@ -230,6 +228,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
 
     private String getDBfrom() {
         String patfile = Environment.getExternalStorageDirectory().getPath() + "/thanhapp/" + DBname;
+
         return patfile;
     }
 

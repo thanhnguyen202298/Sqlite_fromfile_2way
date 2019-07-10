@@ -1,5 +1,6 @@
 package com.victo.sqliteew.model;
 
+import android.databinding.BaseObservable;
 import android.support.annotation.NonNull;
 
 import io.realm.RealmObject;
@@ -12,10 +13,17 @@ public class User extends RealmObject {
     private String birth;
     private String phone;
 
+
+    public User(){
+    }
+
     @NonNull
     @Override
     public String toString() {
-        return name + " - " + age + " - " + birth + " - " + phone;
+
+        StringBuilder sbuider = new StringBuilder();
+        sbuider.append(name).append(" - ").append(age).append(" - ").append(birth).append(" - ").append(phone);
+        return sbuider.toString();
     }
 
     public String getBirth() {
